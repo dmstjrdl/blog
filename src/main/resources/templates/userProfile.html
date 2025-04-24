@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프로필 - MyBlog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 700px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1 0 auto;
+    }
+
+    /* 헤더 스타일 */
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #4285F4;
+      text-decoration: none;
+    }
+
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    .main-nav li {
+      margin-left: 20px;
+    }
+
+    .main-nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .main-nav a:hover {
+      color: #4285F4;
+    }
+
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .login-btn, .signup-btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .login-btn {
+      color: #4285F4;
+      margin-right: 10px;
+      border: 1px solid #4285F4;
+    }
+
+    .signup-btn {
+      color: #fff;
+      background-color: #4285F4;
+      border: 1px solid #4285F4;
+    }
+
+    .auth-buttons.user-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-buttons .username {
+      font-weight: 500;
+      margin-right: 15px;
+      color: #333;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      color: #fff;
+      background-color: #f44336;
+      border: 1px solid #f44336;
+      transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    /* 메인 콘텐츠 스타일 */
+    .main-content {
+      padding: 30px 0;
+    }
+
+    /* 프로필 스타일 */
+    .profile-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .profile-header {
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-avatar-placeholder {
+      font-size: 40px;
+      color: #aaa;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .profile-username {
+      font-size: 16px;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    .profile-bio {
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .profile-stats {
+      display: flex;
+      margin-top: 15px;
+    }
+
+    .stat-item {
+      margin-right: 20px;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .profile-actions {
+      margin-left: auto;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-blue {
+      color: #fff;
+      background-color: #4285F4;
+      border: 1px solid #4285F4;
+    }
+
+    .btn-outline {
+      color: #666;
+      background-color: transparent;
+      border: 1px solid #ddd;
+    }
+
+    /* 탭 네비게이션 */
+    .profile-tabs {
+      display: flex;
+      background-color: #fff;
+      border-bottom: 1px solid #eee;
+    }
+
+    .profile-tab {
+      padding: 15px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .profile-tab.active {
+      color: #4285F4;
+      border-bottom-color: #4285F4;
+    }
+
+    .profile-tab:hover {
+      color: #4285F4;
+    }
+
+    /* 프로필 콘텐츠 영역 */
+    .profile-content {
+      padding: 30px;
+    }
+
+    /* 탭 콘텐츠 */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 작성한 게시글 리스트 */
+    .post-list {
+      list-style: none;
+    }
+
+    .post-item {
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .post-item:last-child {
+      border-bottom: none;
+    }
+
+    .post-item-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .post-item-title a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .post-item-title a:hover {
+      color: #4285F4;
+    }
+
+    .post-item-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .post-item-stats {
+      display: flex;
+    }
+
+    .post-item-stat {
+      margin-left: 15px;
+    }
+
+    .post-item-stat:first-child {
+      margin-left: 0;
+    }
+
+    /* 정보 없음 메시지 */
+    .no-data {
+      padding: 40px 0;
+      text-align: center;
+      color: #999;
+      font-size: 14px;
+    }
+
+    /* 댓글 목록 스타일 */
+    .comment-list {
+      list-style: none;
+    }
+
+    .comment-item {
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+
+    .comment-post-title {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .comment-post-title a {
+      color: #4285F4;
+      text-decoration: none;
+    }
+
+    .comment-post-title a:hover {
+      text-decoration: underline;
+    }
+
+    .comment-content {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .comment-meta {
+      font-size: 12px;
+      color: #999;
+      text-align: right;
+    }
+
+    /* 푸터 스타일 */
+    footer {
+      background-color: #fff;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      margin-top: auto;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-avatar {
+        margin: 0 auto 20px;
+      }
+
+      .profile-stats {
+        justify-content: center;
+      }
+
+      .profile-actions {
+        margin-left: 0;
+        margin-top: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .profile-tabs {
+        overflow-x: auto;
+      }
+
+      .profile-tab {
+        padding: 15px 10px;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- 헤더 섹션 -->
+<th:block th:replace="~{/header/header}"></th:block>
+
+<!-- 메인 콘텐츠 -->
+<div class="container">
+  <div class="main-content">
+    <!-- 프로필 컨테이너 -->
+    <div class="profile-container">
+      <!-- 프로필 헤더 -->
+      <div class="profile-header">
+        <!-- 프로필 아바타 -->
+        <div class="profile-avatar">
+          <span class="profile-avatar-placeholder">
+            <span th:text="${user.nickname.substring(0,1)}">홍</span>
+          </span>
+        </div>
+
+        <!-- 프로필 정보 -->
+        <div class="profile-info">
+          <h1 class="profile-name" th:text="${user.nickname}">홍길동</h1>
+
+          <!-- 프로필 통계 -->
+          <div class="profile-stats">
+            <div class="stat-item">
+              <div class="stat-label">게시글</div>
+              <div class="stat-value" th:text="${posts.size()}">15</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">조회수</div>
+              <div class="stat-value" th:text="${totalViews}">1,234</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">댓글</div>
+              <div class="stat-value" th:text="${totalComments}">42</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 프로필 액션 (자신의 프로필인 경우만 표시) -->
+        <div class="profile-actions">
+          <a href="/profile/edit" th:href="@{/user/edit}" class="btn btn-outline">프로필 수정</a>
+        </div>
+      </div>
+
+      <!-- 프로필 탭 네비게이션 -->
+      <div class="profile-tabs">
+        <a href="#posts" class="profile-tab active" id="post-tab">작성한 글</a>
+        <a href="#comments" class="profile-tab" id="comments-tab">작성한 댓글</a>
+      </div>
+
+      <!-- 프로필 콘텐츠 영역 -->
+      <div class="profile-content">
+        <!-- 작성한 게시글 리스트 -->
+        <div id="posts" class="tab-content active">
+          <ul class="post-list">
+            <li class="post-item" th:each="post : ${posts}">
+              <h3 class="post-item-title">
+                <a th:href="@{/post/postId(postId=${post.id})}" href="/post/1" th:text="${post.title}">첫 번째 여행 이야기: 제주도에서의 추억</a>
+              </h3>
+              <div class="post-item-meta">
+                <div class="post-item-date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2025-04-09 12:00</div>
+                <div class="post-item-stats">
+                  <div class="post-item-stat">
+                    조회수: <span th:text="${post.views}">258</span>
+                  </div>
+                  <div class="post-item-stat">
+                    댓글: <span th:text="${post.comments.size()}">7</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 작성한 댓글 리스트 -->
+        <div id="comments" class="tab-content">
+          <ul class="comment-list">
+            <li class="comment-item" th:each="comment : ${comments}">
+              <div class="comment-post-title">
+                <a href="/post/15" th:href="@{/post/{postId}(postId=${comment.post.id})}" th:text="${comment.post.title}">봄철 산책하기 좋은 장소들</a>에 작성한 댓글
+              </div>
+              <div class="comment-content" th:text="${comment.content}">
+                경의선 숲길도 정말 좋은 장소인 것 같아요! 저도 주말마다 자주 가는데 봄에 꽃이 피면 정말 아름답습니다.
+              </div>
+              <div class="comment-meta" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">
+                2025-04-08 18:23
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 탭 요소들 가져오기
+    const tabs = document.querySelectorAll('.profile-tab');
+
+    // 각 탭에 클릭 이벤트 추가
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // 모든 탭에서 active 클래스 제거
+        tabs.forEach(t => t.classList.remove('active'));
+
+        // 모든 탭 콘텐츠에서 active 클래스 제거
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+
+        // 클릭한 탭에 active 클래스 추가
+        this.classList.add('active');
+
+        // href 속성에서 타겟 ID 가져와서 해당 콘텐츠에 active 클래스 추가
+        const targetId = this.getAttribute('href').substring(1);
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+  });
+</script>
+</body>
+</html>

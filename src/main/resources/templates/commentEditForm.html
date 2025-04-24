@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>댓글 수정 - MyBlog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1 0 auto;
+    }
+
+    /* 헤더 스타일 */
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #4285F4;
+      text-decoration: none;
+    }
+
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    .main-nav li {
+      margin-left: 20px;
+    }
+
+    .main-nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .main-nav a:hover {
+      color: #4285F4;
+    }
+
+    /* 메인 콘텐츠 스타일 */
+    .main-content {
+      padding: 30px 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .comment-edit-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      padding: 25px 30px;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .comment-meta {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .original-post {
+      margin-bottom: 5px;
+    }
+
+    .original-post a {
+      color: #4285F4;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .original-post a:hover {
+      text-decoration: underline;
+    }
+
+    .comment-form {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .comment-textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .comment-textarea:focus {
+      outline: none;
+      border-color: #4285F4;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-blue {
+      color: #fff;
+      background-color: #4285F4;
+      border: 1px solid #4285F4;
+    }
+
+    .btn-outline {
+      color: #666;
+      background-color: transparent;
+      border: 1px solid #ddd;
+    }
+
+    /* 푸터 스타일 */
+    footer {
+      background-color: #fff;
+      padding: 20px 0;
+      border-top: 1px solid #eee;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 반응형 스타일 */
+    @media (max-width: 768px) {
+      .comment-edit-container {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- 헤더 섹션 -->
+<th:block th:replace="~{/header/header}"></th:block>
+
+<!-- 메인 콘텐츠 -->
+<div class="container">
+  <div class="main-content">
+    <div class="comment-edit-container">
+      <h2 class="section-title">댓글 수정</h2>
+
+      <div class="comment-meta">
+        <div class="original-post">
+          게시글: <a th:href="@{'/post/' + ${post.id}}" th:text="${post.title}">게시글 제목</a>
+        </div>
+        <div class="comment-date">
+          작성일: <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-04-09 12:30</span>
+        </div>
+      </div>
+
+      <form class="comment-form" th:action="@{'/comment/edit'}" th:object="${comment}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{post.id}">
+        <div class="form-group">
+          <label for="content">내용</label>
+          <textarea id="content" th:field="*{content}" class="comment-textarea" required></textarea>
+        </div>
+        <div class="form-actions">
+          <a th:href="@{'/post/' + ${post.id}}" class="btn btn-outline">취소</a>
+          <button type="submit" class="btn btn-blue">수정 완료</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
