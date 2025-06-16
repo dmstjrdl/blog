@@ -354,9 +354,7 @@
       </ul>
     </div>
 
-    <!-- 포스트 그리드 -->
     <div class="post-grid">
-      <!-- 포스트 카드 1 -->
       <div class="post-card" th:each="post : ${posts}" th:onclick="|location.href='/post/${post.id}'|" onclick="location.href='/post/1'">
         <div class="post-placeholder">
           <img th:if="${post.thumbnail}" th:src="@{${post.thumbnail}}" alt="썸네일">

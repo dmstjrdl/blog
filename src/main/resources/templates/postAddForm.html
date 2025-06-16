@@ -215,9 +215,7 @@
   </style>
 </head>
 <body>
-<!-- 헤더 섹션 -->
 <th:block th:replace="~{/header/header}"></th:block>
-<!-- 메인 콘텐츠 -->
 <div class="container">
   <div class="main-content">
     <h1 class="page-title">게시글 작성</h1>
@@ -239,9 +237,7 @@
         <input type="text" id="category-input" class="form-control" placeholder="카테고리를 입력하고 엔터를 누르세요">
         <div class="form-text">여러 개의 카테고리를 추가할 수 있습니다.</div>
         <div class="selected-categories" id="selected-categories">
-          <!-- 선택된 카테고리들이 여기에 표시됩니다 -->
         </div>
-        <!-- 실제 폼 제출시 사용될 hidden input -->
         <input type="hidden" id="categories" name="categories" value="">
       </div>
 
@@ -258,7 +254,6 @@
   </div>
 </div>
 
-<!-- 카테고리 태그 기능을 위한 자바스크립트 -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const categoryInput = document.getElementById('category-input');
@@ -266,25 +261,21 @@
     const categoriesHidden = document.getElementById('categories');
     let categories = [];
 
-    // 카테고리 입력 처리
     categoryInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
         e.preventDefault();
 
         const category = this.value.trim();
         if (category && !categories.includes(category)) {
-          // 새 카테고리 추가
           categories.push(category);
           updateCategoryTags();
           updateHiddenInput();
         }
 
-        // 입력 필드 초기화
         this.value = '';
       }
     });
 
-    // 카테고리 태그 UI 업데이트
     function updateCategoryTags() {
       selectedCategories.innerHTML = '';
 
@@ -298,7 +289,6 @@
         selectedCategories.appendChild(categoryTag);
       });
 
-      // 태그 삭제 버튼에 이벤트 리스너 추가
       document.querySelectorAll('.remove-category').forEach(button => {
         button.addEventListener('click', function() {
           const categoryToRemove = this.getAttribute('data-category');
@@ -309,7 +299,6 @@
       });
     }
 
-    // hidden input 값 업데이트
     function updateHiddenInput() {
       categoriesHidden.value = JSON.stringify(categories);
     }

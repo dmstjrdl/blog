@@ -296,13 +296,10 @@
   </style>
 </head>
 <body>
-<!-- 헤더 섹션 -->
 <th:block th:replace="~{/header/header}"></th:block>
 
-<!-- 메인 콘텐츠 -->
 <div class="container">
   <div class="main-content">
-    <!-- 블로그 포스트 섹션 -->
     <div class="blog-section-header">
       <h2 class="section-title">
         <span style="color: #4CAF50;" th:text="${keyword}">키워드</span>
@@ -311,7 +308,6 @@
 
       <div class="action-group">
         <a href="/post/add" class="addPost-btn">게시글 작성</a>
-        <!-- 검색 폼 -->
         <form class="search-form" th:action="@{/post/search}" method="get">
           <input type="text" class="search-input" name="title" placeholder="검색어 입력">
           <button type="submit" class="search-button">검색</button>
@@ -319,9 +315,7 @@
       </div>
     </div>
 
-    <!-- 포스트 그리드 -->
     <div class="post-grid">
-      <!-- 포스트 카드 -->
       <div class="post-card" th:each="post : ${posts}" th:onclick="|location.href='/post/${post.id}'|">
         <div class="post-placeholder"></div>
         <div class="post-content">

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class CategoryController {
         if (categoryId != null) {
             postList = postCategoryService.CategoryByIdGetPost(categoryId).stream()
                     .map(PostCategory::getPost)
-                    .collect(Collectors.toList());
+                    .toList();
         }
 
         model.addAttribute("categoryId", categoryId);

@@ -317,37 +317,29 @@
   </style>
 </head>
 <body>
-<!-- 헤더 섹션 -->
 <th:block th:replace="~{/header/header}"></th:block>
 
-<!-- 메인 콘텐츠 -->
 <div class="container">
   <div class="main-content">
-    <!-- 편집 컨테이너 -->
     <div class="edit-container">
-      <!-- 편집 헤더 -->
       <div class="edit-header">
         <h2 class="edit-title">프로필 수정</h2>
         <p class="edit-subtitle">프로필 정보를 업데이트하여 자신을 표현해보세요.</p>
       </div>
 
-      <!-- 편집 폼 -->
       <div class="edit-form">
         <form action="/user/edit" method="POST">
-          <!-- 닉네임 -->
           <div class="form-group">
             <label for="nickname" class="form-label">닉네임</label>
             <input type="text" id="nickname" name="nickname" class="form-input" th:value="${user.nickname}" value="홍길동">
             <div class="form-hint">다른 사용자들에게 보여질 이름입니다.</div>
           </div>
 
-          <!-- 이메일 -->
           <div class="form-group">
             <label for="email" class="form-label">이메일</label>
             <input type="email" id="email" name="email" class="form-input" th:value="${user.email}" value="gildong@example.com">
           </div>
 
-          <!-- 비밀번호 변경 -->
           <div class="form-group">
             <label for="password" class="form-label">현재 비밀번호</label>
             <input type="password" id="password" name="password" class="form-input">
@@ -359,7 +351,6 @@
             <input type="password" id="newPassword" name="newPassword" class="form-input">
           </div>
 
-          <!-- 액션 버튼 -->
           <div class="form-actions">
             <div>
               <button type="button" class="btn btn-danger" th:onclick="|location.href='/delete'|">계정 삭제</button>

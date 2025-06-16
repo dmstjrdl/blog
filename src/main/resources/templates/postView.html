@@ -553,7 +553,6 @@
         </div>
       </div>
 
-      <!-- 카테고리가 없는 경우에도 좋아요 버튼 표시 -->
       <div class="post-categories" th:if="${post.categories.isEmpty()}">
         <div class="category-tags"></div>
         <div class="like-button-container">
@@ -569,11 +568,9 @@
       </div>
     </div>
 
-    <!-- 댓글 섹션 -->
     <div class="comments-section">
       <h3 class="comments-header">댓글 <span th:text="${#lists.size(post.comments)}">0</span>개</h3>
 
-      <!-- 댓글 작성 폼 -->
       <div class="comment-form" th:if="${user != null}">
         <form th:action="@{'/comment/add/' + ${post.id}}" method="post">
           <textarea id="content" name="content" class="comment-textarea" placeholder="댓글을 작성해주세요." required></textarea>
@@ -583,17 +580,14 @@
         </form>
       </div>
 
-      <!-- 댓글 로그인 안내 -->
       <div class="comment-form" th:if="${user == null}">
         <p style="text-align: center; margin-bottom: 20px;">
           <a href="/login" style="color: #4285F4; text-decoration: none;">로그인</a>하여 댓글을 작성해 보세요.
         </p>
       </div>
 
-      <!-- 댓글 목록 -->
       <ul class="comment-list" th:if="${not #lists.isEmpty(post.comments)}">
         <li class="comment-item" th:each="comment : ${post.comments}">
-          <!--    댓글 조회      -->
           <div class="comment-header">
             <span class="comment-author" th:text="${comment.user.nickname}">댓글 작성자</span>
             <span class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-04-09 12:30</span>
@@ -608,7 +602,6 @@
         </li>
       </ul>
 
-      <!-- 댓글 없음 -->
       <div class="empty-comments" th:if="${#lists.isEmpty(post.comments)}">
         아직 댓글이 없습니다. 첫 댓글을 작성해 보세요!
       </div>

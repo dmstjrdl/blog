@@ -426,28 +426,21 @@
   </style>
 </head>
 <body>
-<!-- 헤더 섹션 -->
 <th:block th:replace="~{/header/header}"></th:block>
 
-<!-- 메인 콘텐츠 -->
 <div class="container">
   <div class="main-content">
-    <!-- 프로필 컨테이너 -->
     <div class="profile-container">
-      <!-- 프로필 헤더 -->
       <div class="profile-header">
-        <!-- 프로필 아바타 -->
         <div class="profile-avatar">
           <span class="profile-avatar-placeholder">
             <span th:text="${user.nickname.substring(0,1)}">홍</span>
           </span>
         </div>
 
-        <!-- 프로필 정보 -->
         <div class="profile-info">
           <h1 class="profile-name" th:text="${user.nickname}">홍길동</h1>
 
-          <!-- 프로필 통계 -->
           <div class="profile-stats">
             <div class="stat-item">
               <div class="stat-label">게시글</div>
@@ -464,21 +457,17 @@
           </div>
         </div>
 
-        <!-- 프로필 액션 (자신의 프로필인 경우만 표시) -->
         <div class="profile-actions">
           <a href="/profile/edit" th:href="@{/user/edit}" class="btn btn-outline">프로필 수정</a>
         </div>
       </div>
 
-      <!-- 프로필 탭 네비게이션 -->
       <div class="profile-tabs">
         <a href="#posts" class="profile-tab active" id="post-tab">작성한 글</a>
         <a href="#comments" class="profile-tab" id="comments-tab">작성한 댓글</a>
       </div>
 
-      <!-- 프로필 콘텐츠 영역 -->
       <div class="profile-content">
-        <!-- 작성한 게시글 리스트 -->
         <div id="posts" class="tab-content active">
           <ul class="post-list">
             <li class="post-item" th:each="post : ${posts}">
@@ -500,7 +489,6 @@
           </ul>
         </div>
 
-        <!-- 작성한 댓글 리스트 -->
         <div id="comments" class="tab-content">
           <ul class="comment-list">
             <li class="comment-item" th:each="comment : ${comments}">
@@ -523,26 +511,20 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // 탭 요소들 가져오기
     const tabs = document.querySelectorAll('.profile-tab');
 
-    // 각 탭에 클릭 이벤트 추가
     tabs.forEach(tab => {
       tab.addEventListener('click', function(e) {
         e.preventDefault();
 
-        // 모든 탭에서 active 클래스 제거
         tabs.forEach(t => t.classList.remove('active'));
 
-        // 모든 탭 콘텐츠에서 active 클래스 제거
         document.querySelectorAll('.tab-content').forEach(content => {
           content.classList.remove('active');
         });
 
-        // 클릭한 탭에 active 클래스 추가
         this.classList.add('active');
 
-        // href 속성에서 타겟 ID 가져와서 해당 콘텐츠에 active 클래스 추가
         const targetId = this.getAttribute('href').substring(1);
         document.getElementById(targetId).classList.add('active');
       });

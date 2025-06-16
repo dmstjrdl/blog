@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+//@Getter @Setter
 public class PostCategory {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,27 @@ public class PostCategory {
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
