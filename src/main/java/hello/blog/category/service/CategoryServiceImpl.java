@@ -15,6 +15,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    //  카테고리 조회 혹은 등록
     @Override
     public Category findOrCreateCategory(String name) {
         Optional<Category> existingCategory = categoryRepository.findByName(name);
@@ -27,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    //  모든 카테고리 조회
     @Override
     public List<Category> findAllCategories() {
         return categoryRepository.findAll();

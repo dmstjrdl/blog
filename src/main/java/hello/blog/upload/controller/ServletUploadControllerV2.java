@@ -21,6 +21,7 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/servlet/v2")
 public class ServletUploadControllerV2 {
+    //  강의용
 
     @Value("${file.dir}")
     public String fileDir;

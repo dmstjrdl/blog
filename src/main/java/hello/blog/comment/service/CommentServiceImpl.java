@@ -20,6 +20,7 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    //  댓글 작성
     @Override
     public void writingComments(String content, Long postId, UserDetails userDetails) {
         Comment newComment = new Comment();
@@ -32,21 +33,25 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(newComment);
     }
 
+    //  댓글 삭제
     @Override
     public void deletingComments(Long commentId) {
         commentRepository.deleteById(commentId);
     }
 
+    //  댓글 조회
     @Override
     public Comment getCommentById(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("Not Found Comment"));
     }
 
+    //  사용자가 작성한 댓글 조회
     @Override
     public List<Comment> getCommentsByUserId(Long userId) {
         return commentRepository.findByUserId(userId);
     }
 
+    //  댓글 수정
     @Override
     public void updatingComments(Long commentId, String content) {
         Comment findComment = commentRepository.findById(commentId).orElseThrow(() -> new NullPointerException("Not Found Comment"));

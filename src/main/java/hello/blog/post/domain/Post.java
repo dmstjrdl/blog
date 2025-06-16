@@ -1,7 +1,7 @@
 package hello.blog.post.domain;
 
 import hello.blog.category.domain.Category;
-import hello.blog.postCategory.PostCategory;
+import hello.blog.postCategory.domain.PostCategory;
 import hello.blog.comment.domain.Comment;
 import hello.blog.user.domain.User;
 import jakarta.persistence.*;

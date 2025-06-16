@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
+    //  회원가입
     @Override
     public User register(RegisterDto registerDto) {
         if (userRepository.existsByUsername(registerDto.getUsername())) {
@@ -41,25 +42,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    //  아이디 조회
     @Override
-    public boolean login(LoginDto loginDto, HttpServletRequest request, HttpServletResponse response) {
-        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(loginDto.getUsername(), loginDto.getPassword());
-
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContext securityContext = SecurityContextHolder.getContextHolderStrategy().createEmptyContext();
-        securityContext.setAuthentication(authentication);
-        SecurityContextHolder.getContextHolderStrategy().setContext(securityContext);
-
-        securityContextRepository.saveContext(securityContext, request, response);
-
-        return true;
-    }
-
-    @Override
-    public User profile(Long userId) {
+    public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NullPointerException("사용자를 찾을 수 없습니다."));
     }
 
+    //  프로필 수정
     @Override
     public boolean update(CustomUserDetails customUserDetails, User user, String newPassword) {
         try {
@@ -78,6 +67,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //  계정 삭제
     @Override
     public void delete(Long userId) {
         userRepository.deleteById(userId);

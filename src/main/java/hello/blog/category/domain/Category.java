@@ -1,6 +1,6 @@
 package hello.blog.category.domain;
 
-import hello.blog.postCategory.PostCategory;
+import hello.blog.postCategory.domain.PostCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

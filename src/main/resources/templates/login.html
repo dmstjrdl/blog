@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,6 +138,14 @@
       color: #666;
     }
 
+    .field-error {
+      border-color: #dc3545 !important; /* Bootstrap의 danger 색상 */
+      box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.25);
+    }
+    .message-error {
+      color:red;
+    }
+
     @media (max-width: 576px) {
       .login-container {
         padding: 25px;
@@ -152,24 +160,17 @@
     <p>블로그 서비스를 이용하기 위해 로그인해 주세요.</p>
   </div>
 
-  <form action="/login" method="post">
+  <form action="/login" method="post" th:object="${loginDto}">
     <div class="form-group">
       <label for="username">사용자 이름</label>
-      <input type="text" class="form-control" id="username" name="username" placeholder="사용자 이름 입력" required>
+      <input type="text" class="form-control" id="username" th:field="*{username}" th:errorclass="field-error" placeholder="사용자 이름 입력">
+      <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="message-error"></div>
     </div>
 
     <div class="form-group">
       <label for="password">비밀번호</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호 입력" required>
-    </div>
-
-    <div class="forgot-password">
-      <a href="/forgot-password">비밀번호를 잊으셨나요?</a>
-    </div>
-
-    <div class="remember-me">
-      <input type="checkbox" id="remember" name="remember">
-      <label for="remember">로그인 상태 유지</label>
+      <input type="password" class="form-control" id="password" th:field="*{password}" th:errorclass="field-error" placeholder="비밀번호 입력">
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="message-error"></div>
     </div>
 
     <button type="submit" class="btn-login">로그인</button>

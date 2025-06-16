@@ -22,6 +22,7 @@ public class LikePostServiceImpl implements LikePostService {
         return likePostRepository.findByPostId(postId);
     }
 
+    //  게시글 좋아요 OR 좋아요 삭제
     @Override
     public void likeAddOrDelete(Long postId, User user) {
         LikePost findLikePost = likePostRepository.findByPostIdAndUserId(postId, user.getId());

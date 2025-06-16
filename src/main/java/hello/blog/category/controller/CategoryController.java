@@ -4,7 +4,7 @@ import hello.blog.category.domain.Category;
 import hello.blog.category.service.CategoryService;
 import hello.blog.post.domain.Post;
 import hello.blog.post.service.PostService;
-import hello.blog.postCategory.PostCategory;
+import hello.blog.postCategory.domain.PostCategory;
 import hello.blog.postCategory.service.PostCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,6 +22,7 @@ public class CategoryController {
     private final PostCategoryService postCategoryService;
     private final CategoryService categoryService;
 
+    //  카테고리 조회
     @GetMapping("/categories")
     public String categories(@RequestParam(required = false) Long categoryId, Model model) {
         List<Post> postList = postService.getAllPosts();

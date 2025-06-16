@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,6 +113,14 @@
       text-decoration: underline;
     }
 
+    .field-error {
+      border-color: #dc3545 !important; /* Bootstrap의 danger 색상 */
+      box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.25);
+    }
+    .message-error {
+      color:red;
+    }
+
     @media (max-width: 576px) {
       .signup-container {
         padding: 25px;
@@ -127,26 +135,29 @@
     <p>블로그 서비스를 이용하시려면 회원가입이 필요합니다.</p>
   </div>
 
-  <form action="/register" method="post">
+  <form action="/register" method="post" th:object="${registerDto}">
     <div class="form-group">
       <label for="username">사용자 이름</label>
-      <input type="text" class="form-control" id="username" name="username" placeholder="사용자 이름 입력" required>
+      <input type="text" class="form-control" id="username" th:field="*{username}" th:errorclass="field-error" placeholder="사용자 이름 입력">
+      <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="message-error"></div>
     </div>
 
     <div class="form-group">
       <label for="password">비밀번호</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호 입력" required>
+      <input type="password" class="form-control" id="password" th:field="*{password}" th:errorclass="field-error" placeholder="비밀번호 입력">
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="message-error"></div>
       <p class="password-info">8자 이상의 영문, 숫자, 특수문자 조합</p>
     </div>
 
     <div class="form-group">
       <label for="nickname">닉네임</label>
-      <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임 입력" required>
+      <input type="text" class="form-control" id="nickname" th:field="*{nickname}" th:errorclass="field-error" placeholder="닉네임 입력">
+      <div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="message-error"></div>
     </div>
 
     <div class="form-group">
-      <label for="email">이메일 주소</label>
-      <input type="email" class="form-control" id="email" name="email" placeholder="example@email.com" required>
+      <label for="email">이메일 주소(선택)</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="example@email.com">
     </div>
 
     <button type="submit" class="btn-signup">가입하기</button>

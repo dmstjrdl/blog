@@ -1,6 +1,6 @@
 package hello.blog.postCategory.repository;
 
-import hello.blog.postCategory.PostCategory;
+import hello.blog.postCategory.domain.PostCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

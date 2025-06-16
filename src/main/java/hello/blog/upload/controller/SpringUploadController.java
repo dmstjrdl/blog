@@ -17,9 +17,11 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/spring")
 public class SpringUploadController {
+    //  강의용
 
     @Value("${file.dir}")
     public String fileDir;
+
 
     @GetMapping("/upload")
     public String newFile() {

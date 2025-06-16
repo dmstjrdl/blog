@@ -1,6 +1,6 @@
 package hello.blog.postCategory.service;
 
-import hello.blog.postCategory.PostCategory;
+import hello.blog.postCategory.domain.PostCategory;
 
 import java.util.List;
 

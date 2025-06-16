@@ -16,6 +16,7 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/servlet/v1")
 public class ServletUploadControllerV1 {
+    //  강의용
 
     @GetMapping("/upload")
     public String newFile() {

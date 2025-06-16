@@ -19,6 +19,7 @@ public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
 
+    //  댓글 등록
     @PostMapping("/add/{postId}")
     public String addComment(@PathVariable Long postId, @ModelAttribute("content") String content, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         commentService.writingComments(content, postId, customUserDetails);
@@ -26,12 +27,14 @@ public class CommentController {
         return "redirect:/post/" + postId;
     }
 
+    //  댓글 삭제
     @GetMapping("/delete")
     public String deleteComment(@RequestParam Long commentId, @RequestParam Long postId) {
         commentService.deletingComments(commentId);
         return "redirect:/post/" + postId;
     }
 
+    //  댓글 수정 폼
     @GetMapping("/edit")
     public String editCommentForm(@RequestParam Long commentId, @RequestParam Long postId, Model model) {
         Comment findComment = commentService.getCommentById(commentId);
@@ -41,6 +44,7 @@ public class CommentController {
         return "commentEditForm";
     }
 
+    //  댓글 수정
     @PostMapping("/edit")
     public String editComment(@ModelAttribute Comment comment) {
         commentService.updatingComments(comment.getId(), comment.getContent());

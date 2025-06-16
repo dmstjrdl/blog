@@ -21,9 +21,11 @@ public class PostServiceImpl implements PostService {
     private final CategoryService categoryService;
     private final PostRepository postRepository;
 
+    //  썸네일 경로
     @Value("${file.dir}")
     private String fileDir;
 
+    //  게시글 등록
     @Override
     public void addPost(AddPostDto addPostDto) {
         Post post = new Post();
@@ -57,31 +59,37 @@ public class PostServiceImpl implements PostService {
         postRepository.save(post);
     }
 
+    //  게시글 조회
     @Override
     public Post postById(Long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Not Found Post"));
     }
 
+    //  게시글 전부 조회 (Pageable) 추가 예정
     @Override
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
+    //  게시글 제목 조회
     @Override
     public List<Post> postByTitle(String title) {
         return postRepository.findByTitleContainingIgnoreCase(title);
     }
 
+    //  가장 최신 6개의 게시글 조회
     @Override
     public List<Post> getTop6Posts() {
         return postRepository.findTop6ByOrderByIdDesc();
     }
 
+    //  특정 사용자가 작성한 게시글 조회
     @Override
     public List<Post> postByUserId(Long userId) {
         return postRepository.findByUserId(userId);
     }
 
+    //  게시글 수정
     @Override
     public void updatePost(Long postId, Post post) {
         Post findPost = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Not Found Post"));
@@ -91,6 +99,7 @@ public class PostServiceImpl implements PostService {
         postRepository.save(findPost);
     }
 
+    //  게시글 삭제
     @Override
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
