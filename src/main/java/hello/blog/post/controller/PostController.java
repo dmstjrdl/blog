@@ -4,15 +4,18 @@ import hello.blog.CustomUserDetails;
 import hello.blog.post.domain.LikePost;
 import hello.blog.post.domain.Post;
 import hello.blog.post.dto.AddPostDto;
+import hello.blog.post.dto.PostEditDto;
 import hello.blog.post.service.LikePostService;
 import hello.blog.post.service.PostService;
 import hello.blog.user.domain.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,20 +31,23 @@ public class PostController {
 
     //  게시글 등록 폼
     @GetMapping("/add")
-    public String addPostForm() {
+    public String addPostForm(@ModelAttribute AddPostDto addPostDto, Model model) {
+        model.addAttribute("addPostDto", addPostDto);
         return "postAddForm";
     }
 
     //  게시글 등록
     @PostMapping("/add")
-    public String addPost(@ModelAttribute AddPostDto addPostDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public String addPost(@Valid @ModelAttribute AddPostDto addPostDto, BindingResult bindingResult, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        if (bindingResult.hasErrors()) return "postAddForm";
+
         addPostDto.setUser(customUserDetails.getUser());
 
         postService.addPost(addPostDto);
         return "redirect:/";
     }
 
-    //  게시글 조회수
+    //  게시글 조회
     @GetMapping("/{postId}")
     public String postView(@PathVariable Long postId, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         Post post = postService.postById(postId);
@@ -49,7 +55,7 @@ public class PostController {
         boolean userLike = likePosts.stream().map(like -> like.getUser().getUsername().equals(userDetails.getUsername())).isParallel();
 
         post.setViews(post.getViews() + 1);
-        postService.updatePost(postId, post);
+//        postService.updatePost(postId, post);
 
         model.addAttribute("userLike", userLike);
         model.addAttribute("likes", likePosts);
@@ -69,16 +75,23 @@ public class PostController {
 
     //  게시글 수정 폼
     @GetMapping("/edit")
-    public String postEditForm(@RequestParam("postId") Long postId, Model model) {
+    public String postEditForm(@ModelAttribute PostEditDto postEditDto, @RequestParam("postId") Long postId, Model model) {
         Post post = postService.postById(postId);
-        model.addAttribute("post", post);
+
+        postEditDto.setPostId(post.getId());
+        postEditDto.setTitle(post.getTitle());
+        postEditDto.setContent(post.getContent());
+
+        model.addAttribute("postEditDto", postEditDto);
         return "postEditForm";
     }
 
     //  게시글 수정
     @PostMapping("/edit")
-    public String postEdit(@RequestParam Long postId, @ModelAttribute Post post) {
-        postService.updatePost(postId, post);
+    public String postEdit(@Valid @ModelAttribute PostEditDto postEditDto, BindingResult bindingResult, @RequestParam Long postId) {
+        if (bindingResult.hasErrors()) return "postEditForm";
+
+        postService.updatePost(postId, postEditDto);
         return "redirect:/post/" + postId;
     }
 
@@ -93,6 +106,11 @@ public class PostController {
     @GetMapping("/search")
     public String postSearchForm(@RequestParam String title, Model model) {
         List<Post> posts = postService.postByTitle(title);
+
+        for (Post post : posts) {
+            log.info(post.getThumbnail());
+        }
+
         model.addAttribute("keyword", title);
         model.addAttribute("posts", posts);
         return "postSearchView";

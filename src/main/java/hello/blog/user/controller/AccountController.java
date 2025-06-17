@@ -53,9 +53,11 @@ public class AccountController {
     }
 
     //  로그인 프로세스 매핑
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDto") LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
-        if (bindingResult.hasErrors()) return "login";
+    @PostMapping("/process")
+    public String loginProcess(@Valid @ModelAttribute("loginDto") LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 

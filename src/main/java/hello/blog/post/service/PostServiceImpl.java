@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hello.blog.category.domain.Category;
 import hello.blog.category.service.CategoryService;
 import hello.blog.post.dto.AddPostDto;
+import hello.blog.post.dto.PostEditDto;
 import hello.blog.post.repository.PostRepository;
 import hello.blog.post.domain.Post;
 import lombok.RequiredArgsConstructor;
@@ -91,10 +92,11 @@ public class PostServiceImpl implements PostService {
 
     //  게시글 수정
     @Override
-    public void updatePost(Long postId, Post post) {
+    public void updatePost(Long postId, PostEditDto postEditDto) {
         Post findPost = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("Not Found Post"));
-        findPost.setTitle(post.getTitle());
-        findPost.setContent(post.getContent());
+
+        findPost.setTitle(postEditDto.getTitle());
+        findPost.setContent(postEditDto.getContent());
 
         postRepository.save(findPost);
     }

@@ -200,6 +200,16 @@
     .post-placeholder {
       height: 180px;
       background-color: #e0e0e0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .post-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
 
     .post-content {
@@ -317,7 +327,9 @@
 
     <div class="post-grid">
       <div class="post-card" th:each="post : ${posts}" th:onclick="|location.href='/post/${post.id}'|">
-        <div class="post-placeholder"></div>
+        <div class="post-placeholder">
+          <img th:if="${post.thumbnail}" th:src="@{${post.thumbnail}}" alt="썸네일">
+        </div>
         <div class="post-content">
           <h3 class="post-title" th:text="${post.title}">게시글 제목</h3>
           <div class="post-meta">

@@ -146,7 +146,6 @@
       <label for="password">비밀번호</label>
       <input type="password" class="form-control" id="password" th:field="*{password}" th:errorclass="field-error" placeholder="비밀번호 입력">
       <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="message-error"></div>
-      <p class="password-info">8자 이상의 영문, 숫자, 특수문자 조합</p>
     </div>
 
     <div class="form-group">

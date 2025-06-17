@@ -160,7 +160,7 @@
     <p>블로그 서비스를 이용하기 위해 로그인해 주세요.</p>
   </div>
 
-  <form action="/login" method="post" th:object="${loginDto}">
+  <form action="/process" method="post" th:object="${loginDto}">
     <div class="form-group">
       <label for="username">사용자 이름</label>
       <input type="text" class="form-control" id="username" th:field="*{username}" th:errorclass="field-error" placeholder="사용자 이름 입력">

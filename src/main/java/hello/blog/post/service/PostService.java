@@ -2,6 +2,7 @@ package hello.blog.post.service;
 
 import hello.blog.post.domain.Post;
 import hello.blog.post.dto.AddPostDto;
+import hello.blog.post.dto.PostEditDto;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface PostService {
     List<Post> getTop6Posts();
     List<Post> postByUserId(Long userId);
 
-    void updatePost(Long postId, Post post);
+    void updatePost(Long postId, PostEditDto postEditDto);
 
     void deletePost(Long postId);
 }
